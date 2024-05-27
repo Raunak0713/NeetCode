@@ -1,0 +1,22 @@
+class Solution {
+    public int numUniqueEmails(String[] emails) {
+        HashSet<String> ans = new HashSet<>();
+        for(String email : emails){
+            ans.add(CheckUnique(email));
+        }
+        return ans.size();
+    }
+    public String CheckUnique(String email){
+        int AtIndex = email.indexOf('@');
+        String local = email.substring(0,AtIndex);
+        String domain = email.substring(AtIndex);
+
+        local = local.replace(".","");
+
+        int PlusIndex = local.indexOf('+');
+        if(PlusIndex != -1){
+            local = local.substring(0,PlusIndex);
+        }
+        return local + domain;
+    }
+}
