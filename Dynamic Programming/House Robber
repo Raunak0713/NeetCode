@@ -1,0 +1,81 @@
+---------
+Recursive
+---------
+class Solution {
+    public int rob(int[] nums) {
+        return solve(nums,0);
+    }
+    public int solve(int[] nums,int index){
+        if(index >= nums.length){
+            return 0;
+        }
+        int steal = nums[index] + solve(nums,index+2);
+        int skip = solve(nums,index+1);
+        return Math.max(steal,skip);
+    }
+}
+-----------
+Memoization
+-----------
+class Solution {
+    int[] DP;
+    public int rob(int[] nums) {
+        DP = new int[nums.length+1];
+        Arrays.fill(DP,-1);
+        return solve(nums,0);
+    }
+    public int solve(int[] nums,int index){
+        if(index >= nums.length){
+            return 0;
+        }
+        if(DP[index] != -1){
+            return DP[index];
+        }
+        int steal = nums[index] + solve(nums,index+2);
+        int skip = solve(nums,index+1);
+        return DP[index] = Math.max(steal,skip);
+    }
+}
+----------
+Tabulation
+----------
+class Solution {
+    int[] DP;
+    public int rob(int[] nums) {
+        DP = new int[nums.length+1];
+        Arrays.fill(DP,-1);
+        return solve(nums);
+    }
+    public int solve(int[] nums){
+        DP[0] = nums[0];
+        if(nums.length == 1) return nums[0];
+        DP[1] = nums[0] > nums[1] ? nums[0] : nums[1];
+        for(int i=2;i<nums.length;i++){
+            int steal = nums[i] + DP[i-2];
+            int skip = DP[i-1];
+            DP[i] = steal > skip ? steal : skip;
+        }
+        return DP[nums.length-1];
+    }
+}
+------------------
+Space Optimization
+------------------
+class Solution {
+    public int rob(int[] nums) {
+        return solve(nums);
+    }
+    public int solve(int[] nums){
+        int first = nums[0];
+        if(nums.length == 1) return nums[0];
+        int second = nums[0] > nums[1] ? nums[0] : nums[1];
+        for(int i=2;i<nums.length;i++){
+            int steal = nums[i] + first;
+            int skip = second;
+            int next = steal > skip ? steal : skip;
+            first = second;
+            second = next;
+        }
+        return second;
+    }
+}
