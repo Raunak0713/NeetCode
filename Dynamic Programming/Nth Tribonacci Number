@@ -1,0 +1,74 @@
+---------
+Recursive
+---------
+class Solution {
+    public int tribonacci(int n) {
+        return solve(n);
+    }
+    public int solve(int n){
+        if(n<=1) return n;
+        if(n==2) return 1;
+        return solve(n-1) + solve(n-2) + solve(n-3);
+    }
+}
+-----------
+Memoization
+-----------
+class Solution {
+    int[] DP;
+    public int tribonacci(int n) {
+        DP = new int[n+1];
+        Arrays.fill(DP,-1);
+        return solve(n);
+    }
+    public int solve(int n){
+        if(n<=1) return n;
+        if(n==2) return 1;
+        if(DP[n] != -1) return DP[n];
+        return DP[n] = solve(n-1) + solve(n-2) + solve(n-3);
+    }
+}
+----------
+Tabulation
+----------
+class Solution {
+    int[] DP;
+    public int tribonacci(int n) {
+        DP = new int[n+1];
+        Arrays.fill(DP,-1);
+        return solve(n);
+    }
+    public int solve(int n){
+        if(n<=1) return n;
+        if(n==2) return 1;
+        DP[0] = 0;
+        DP[1] = 1;
+        DP[2] = 1;
+        for(int i=3;i<=n;i++){
+            DP[i] = DP[i-1] + DP[i-2] + DP[i-3];
+        }
+        return DP[n];
+    }
+}
+------------------
+Space Optimization
+------------------
+class Solution {
+    public int tribonacci(int n) {
+        return solve(n);
+    }
+    public int solve(int n){
+        if(n<=1) return n;
+        if(n==2) return 1;
+        int first = 0;
+        int second = 1;
+        int third = 1;
+        for(int i=3;i<=n;i++){
+            int next = first + second + third;
+            first = second;
+            second = third;
+            third = next;
+        }
+        return third;
+    }
+}
